@@ -10,11 +10,19 @@ public class Quality {
     }
 
     public Quality increment() {
-        return (value < MAX_VALUE) ? new Quality(value + 1) : this;
+        return increment(1);
+    }
+
+    public Quality increment(int increment) {
+        return new Quality(Math.min(MAX_VALUE, value + increment));
     }
 
     public Quality decrement() {
-        return (value > MIN_VALUE) ? new Quality(value - 1) : this;
+        return decrement(1);
+    }
+
+    public Quality decrement(int decrement) {
+        return new Quality(Math.max(MIN_VALUE, value - decrement));
     }
 
     public int value() {

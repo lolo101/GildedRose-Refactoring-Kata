@@ -10,12 +10,12 @@ public class Item {
         qualityRules.put("Aged Brie", (sellIn, quality) -> quality.increment());
         qualityRules.put("Backstage passes to a TAFKAL80ETC concert", (sellIn, quality) -> {
             if (sellIn < 0) return new Quality(0);
-            if (sellIn <= 5) return quality.increment().increment().increment();
-            if (sellIn <= 10) return quality.increment().increment();
+            if (sellIn <= 5) return quality.increment(3);
+            if (sellIn <= 10) return quality.increment(2);
             return quality.increment();
         });
         qualityRules.put("Sulfuras, Hand of Ragnaros", (sellIn, quality) -> quality);
-        qualityRules.put("Conjured Mana Cake", (sellIn, quality) -> sellIn >= 0 ? quality.decrement().decrement() : quality.decrement().decrement().decrement().decrement());
+        qualityRules.put("Conjured Mana Cake", (sellIn, quality) -> sellIn >= 0 ? quality.decrement(2) : quality.decrement(4));
     }
 
     public final String name;
@@ -33,7 +33,7 @@ public class Item {
     public void updateQuality() {
         if (!name.equals("Sulfuras, Hand of Ragnaros")) --sellIn;
 
-        QualityRule rule = qualityRules.getOrDefault(name, (sellIn, quality) -> sellIn >= 0 ? quality.decrement() : quality.decrement().decrement());
+        QualityRule rule = qualityRules.getOrDefault(name, (sellIn, quality) -> sellIn >= 0 ? quality.decrement() : quality.decrement(2));
         quality = rule.updateQuality(sellIn, quality);
     }
 
