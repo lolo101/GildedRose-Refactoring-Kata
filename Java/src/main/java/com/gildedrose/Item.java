@@ -15,6 +15,7 @@ public class Item {
             return quality.increment();
         });
         qualityRules.put("Sulfuras, Hand of Ragnaros", (sellIn, quality) -> quality);
+        qualityRules.put("Conjured Mana Cake", (sellIn, quality) -> sellIn >= 0 ? quality.decrement().decrement() : quality.decrement().decrement().decrement().decrement());
     }
 
     public final String name;
