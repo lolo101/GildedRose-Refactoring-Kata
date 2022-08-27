@@ -14,8 +14,47 @@ public class Item {
         this.quality = new Quality(quality);
     }
 
-   @Override
-   public String toString() {
+    public void updateQuality() {
+        if (!name.equals("Aged Brie")
+            && !name.equals("Backstage passes to a TAFKAL80ETC concert")) {
+            if (!name.equals("Sulfuras, Hand of Ragnaros")) {
+                quality.decrement();
+            }
+        } else {
+            quality.increment();
+
+            if (name.equals("Backstage passes to a TAFKAL80ETC concert")) {
+                if (sellIn < 11) {
+                    quality.increment();
+                }
+
+                if (sellIn < 6) {
+                    quality.increment();
+                }
+            }
+        }
+
+        if (!name.equals("Sulfuras, Hand of Ragnaros")) {
+            sellIn = sellIn - 1;
+        }
+
+        if (sellIn < 0) {
+            if (!name.equals("Aged Brie")) {
+                if (!name.equals("Backstage passes to a TAFKAL80ETC concert")) {
+                    if (!name.equals("Sulfuras, Hand of Ragnaros")) {
+                        quality.decrement();
+                    }
+                } else {
+                    quality = new Quality(0);
+                }
+            } else {
+                quality.increment();
+            }
+        }
+    }
+
+    @Override
+    public String toString() {
         return this.name + ", " + this.sellIn + ", " + this.quality.value();
     }
 }
