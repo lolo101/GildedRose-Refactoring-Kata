@@ -15,7 +15,7 @@ public class Item {
             return quality.increment();
         });
         qualityRules.put("Sulfuras, Hand of Ragnaros", (sellIn, quality) -> quality);
-        qualityRules.put("Conjured Mana Cake", (sellIn, quality) -> sellIn >= 0 ? quality.decrement(2) : quality.decrement(4));
+        qualityRules.put("Conjured Mana Cake", (sellIn, quality) -> quality.decrement(sellIn >= 0 ? 2 : 4));
     }
 
     public final String name;
@@ -33,7 +33,7 @@ public class Item {
     public void updateQuality() {
         if (!name.equals("Sulfuras, Hand of Ragnaros")) --sellIn;
 
-        QualityRule rule = qualityRules.getOrDefault(name, (sellIn, quality) -> sellIn >= 0 ? quality.decrement() : quality.decrement(2));
+        QualityRule rule = qualityRules.getOrDefault(name, (sellIn, quality) -> quality.decrement(sellIn >= 0 ? 1 : 2));
         quality = rule.updateQuality(sellIn, quality);
     }
 
