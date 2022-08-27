@@ -1,8 +1,23 @@
 package com.gildedrose;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Item {
 
-    public String name;
+    private static final Map<String, QualityRule> qualityRules = new HashMap<>();
+    static {
+        qualityRules.put("Aged Brie", (sellIn, quality) -> quality.increment());
+        qualityRules.put("Backstage passes to a TAFKAL80ETC concert", (sellIn, quality) -> {
+            if (sellIn < 0) return new Quality(0);
+            if (sellIn <= 5) return quality.increment().increment().increment();
+            if (sellIn <= 10) return quality.increment().increment();
+            return quality.increment();
+        });
+        qualityRules.put("Sulfuras, Hand of Ragnaros", (sellIn, quality) -> quality);
+    }
+
+    public final String name;
 
     public int sellIn;
 
@@ -15,42 +30,10 @@ public class Item {
     }
 
     public void updateQuality() {
-        if (!name.equals("Aged Brie")
-            && !name.equals("Backstage passes to a TAFKAL80ETC concert")) {
-            if (!name.equals("Sulfuras, Hand of Ragnaros")) {
-                quality.decrement();
-            }
-        } else {
-            quality.increment();
+        if (!name.equals("Sulfuras, Hand of Ragnaros")) --sellIn;
 
-            if (name.equals("Backstage passes to a TAFKAL80ETC concert")) {
-                if (sellIn < 11) {
-                    quality.increment();
-                }
-
-                if (sellIn < 6) {
-                    quality.increment();
-                }
-            }
-        }
-
-        if (!name.equals("Sulfuras, Hand of Ragnaros")) {
-            sellIn = sellIn - 1;
-        }
-
-        if (sellIn < 0) {
-            if (!name.equals("Aged Brie")) {
-                if (!name.equals("Backstage passes to a TAFKAL80ETC concert")) {
-                    if (!name.equals("Sulfuras, Hand of Ragnaros")) {
-                        quality.decrement();
-                    }
-                } else {
-                    quality = new Quality(0);
-                }
-            } else {
-                quality.increment();
-            }
-        }
+        QualityRule rule = qualityRules.getOrDefault(name, (sellIn, quality) -> sellIn >= 0 ? quality.decrement() : quality.decrement().decrement());
+        quality = rule.updateQuality(sellIn, quality);
     }
 
     @Override
