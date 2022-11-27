@@ -12,6 +12,6 @@ class GildedRose {
     }
 
     private static void updateQuality(Item item) {
-        QualityFactory.select(item);
+        QualityFactory.select(item).update();
     }
 }
