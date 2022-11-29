@@ -14,82 +14,75 @@ public class QualityFactory {
         }
     }
 
-    private static class SulfurasQuality implements Quality {
+    private static class SulfurasQuality extends Quality {
+
+        private SulfurasQuality() {
+            super(null);
+        }
+
         @Override
-        public void update() {
+        protected void updateSellIn() {
+            // do nothing
+        }
+
+        @Override
+        protected void upateQuality() {
             // do nothing
         }
     }
 
-    private static class AgedBrieQuality implements Quality {
-
-        private final Item item;
+    private static class AgedBrieQuality extends Quality {
 
         private AgedBrieQuality(Item item) {
-            this.item = item;
+            super(item);
         }
 
         @Override
-        public void update() {
+        protected void upateQuality() {
             if (item.quality < 50) {
                 item.quality = item.quality + 1;
             }
-            item.sellIn = item.sellIn - 1;
             if (item.sellIn < 0) {
                 if (item.quality < 50) {
                     item.quality = item.quality + 1;
                 }
             }
-
         }
     }
 
-    private static class BackstagePassesQuality implements Quality {
-
-        private final Item item;
+    private static class BackstagePassesQuality extends Quality {
 
         private BackstagePassesQuality(Item item) {
-            this.item = item;
+            super(item);
         }
 
         @Override
-        public void update() {
+        protected void upateQuality() {
             if (item.quality < 50) {
                 item.quality = item.quality + 1;
+                if (item.sellIn < 10) {
+                    item.quality = item.quality + 1;
+                }
+                if (item.sellIn < 5) {
+                    item.quality = item.quality + 1;
+                }
             }
-
-            if (item.sellIn < 11) {
-                item.quality = item.quality + 1;
-            }
-
-            if (item.sellIn < 6) {
-                item.quality = item.quality + 1;
-            }
-            item.sellIn = item.sellIn - 1;
-            if (item.sellIn < 0) {
+            if (item.sellIn <= 0) {
                 item.quality = 0;
             }
         }
     }
 
-    private static class DefaultQuality implements Quality {
-
-        private final Item item;
+    private static class DefaultQuality extends Quality {
 
         private DefaultQuality(Item item) {
-            this.item = item;
+            super(item);
         }
 
         @Override
-        public void update() {
+        protected void upateQuality() {
             if (item.quality > 0) {
-                item.quality = item.quality - 1;
-            }
-            item.sellIn = item.sellIn - 1;
-            if (item.sellIn < 0) {
-                if (item.quality > 0) {
-                    item.quality = item.quality - 1;
-                }
+                item.quality = item.quality - (item.sellIn < 0 ? 2 : 1);
             }
         }
     }
