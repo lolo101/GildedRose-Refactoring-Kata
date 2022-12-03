@@ -2,17 +2,17 @@ package com.gildedrose;
 
 class SulfurasQuality extends Quality {
 
-    SulfurasQuality() {
-        super(null);
+    SulfurasQuality(Item item) {
+        super(item);
     }
 
     @Override
-    protected void updateSellIn() {
-        // do nothing
+    protected int sellInIncrement() {
+        return 0;
     }
 
     @Override
-    protected void upateQuality() {
-        // do nothing
+    protected int qualityIncrement() {
+        return 0;
     }
 }

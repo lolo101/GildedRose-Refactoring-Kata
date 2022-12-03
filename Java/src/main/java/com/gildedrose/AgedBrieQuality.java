@@ -7,14 +7,7 @@ class AgedBrieQuality extends Quality {
     }
 
     @Override
-    protected void upateQuality() {
-        if (item.quality < 50) {
-            item.quality = item.quality + 1;
-        }
-        if (item.sellIn < 0) {
-            if (item.quality < 50) {
-                item.quality = item.quality + 1;
-            }
-        }
+    protected int qualityIncrement() {
+        return item.sellIn < 0 ? 2 : 1;
     }
 }

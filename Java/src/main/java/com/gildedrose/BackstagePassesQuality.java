@@ -7,18 +7,16 @@ class BackstagePassesQuality extends Quality {
     }
 
     @Override
-    protected void upateQuality() {
-        if (item.quality < 50) {
-            item.quality = item.quality + 1;
-            if (item.sellIn < 10) {
-                item.quality = item.quality + 1;
-            }
-            if (item.sellIn < 5) {
-                item.quality = item.quality + 1;
-            }
-        }
+    protected int qualityIncrement() {
         if (item.sellIn <= 0) {
-            item.quality = 0;
+            return Integer.MIN_VALUE;
         }
+        if (item.sellIn < 5) {
+            return 3;
+        }
+        if (item.sellIn < 10) {
+            return 2;
+        }
+        return 1;
     }
 }

@@ -1,5 +1,8 @@
 package com.gildedrose;
 
+import static java.lang.Math.max;
+import static java.lang.Math.min;
+
 public abstract class Quality {
 
     protected final Item item;
@@ -9,13 +12,14 @@ public abstract class Quality {
     }
 
     public final void update() {
-        updateSellIn();
-        upateQuality();
+        item.sellIn += sellInIncrement();
+        int unboundedQuality = item.quality + qualityIncrement();
+        item.quality = max(0, min(unboundedQuality, 50));
     }
 
-    protected void updateSellIn() {
-        item.sellIn = item.sellIn - 1;
+    protected int sellInIncrement() {
+        return -1;
     }
 
-    protected abstract void upateQuality();
+    protected abstract int qualityIncrement();
 }
