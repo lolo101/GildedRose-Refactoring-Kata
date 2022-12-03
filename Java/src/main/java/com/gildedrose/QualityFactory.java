@@ -10,6 +10,7 @@ public class QualityFactory {
         qualities.put("Sulfuras, Hand of Ragnaros", SulfurasQuality.class);
         qualities.put("Aged Brie", AgedBrieQuality.class);
         qualities.put("Backstage passes to a TAFKAL80ETC concert", BackstagePassesQuality.class);
+        qualities.put("Conjured Mana Cake", ConjuredQuality.class);
     }
 
     static Quality select(Item item) {
